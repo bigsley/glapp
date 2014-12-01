@@ -4,7 +4,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 var app = new EmberApp({
   'ember-cli-bootstrap': {
-    'importBootstrapTheme': true
+    'importBootstrapCSS': true
   }    
 });
 

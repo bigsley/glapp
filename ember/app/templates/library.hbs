@@ -1,0 +1,9 @@
+<h2 class="name">
+  {{#link-to 'library' model }}{{model.name}}{{/link-to}}
+</h2> 
+{{#each command in model.commands}}
+  <div class="command">
+    {{command.code}}
+  </div>
+{{/each}}
+

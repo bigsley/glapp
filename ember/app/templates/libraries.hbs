@@ -1,7 +1,11 @@
+<h2>
+  Libraries
+</h2>
+
 {{#each library in model}}
   <div class="library">
     <div class="name">
-      {{ library.name }}
+      {{#link-to 'library' library }}{{library.name}}{{/link-to}}
     </div> 
     {{#each command in library.commands}}
       <div class="command">

@@ -1,5 +1,9 @@
 html, body {
-  margin: 20px;
+  padding-top: 40px;
+}
+
+.library {
+  margin-bottom: 10px;
 }
 
 .library .name {
