@@ -1,0 +1,12 @@
+{{#each library in model}}
+  <div class="library">
+    <div class="name">
+      {{ library.name }}
+    </div> 
+    {{#each command in library.commands}}
+      <div class="command">
+        {{command.code}}
+      </div>
+    {{/each}}
+  </div>
+{{/each}}
