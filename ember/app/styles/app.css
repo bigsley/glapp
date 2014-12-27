@@ -13,3 +13,14 @@ html, body {
 .command {
   margin: 0 0 0 10px;
 }
+
+#editor-canvas {
+  width: 500px;
+  height: 500px;
+  border: 1px solid gray;
+}
+
+.editor-input {
+  display: block;
+  width: 500px;
+}

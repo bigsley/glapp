@@ -1,24 +1,31 @@
 import Ember from 'ember';
 
 var Vector = Ember.Object.extend({
-  init: function (x, y) {
-    this.x = x;
-    this.y = y;
+  init: function (vals) {
+    this.vals = vals;
     return this;
   },
 
   scale: function (scalar) {
-    return new Vector(this.x * scalar, this.y * scalar); 
-  },
+    var newVals = _.map(this.vals, function (val) { return val * scalar });
+
+    // need to use this.constructor in case there are subclasses
+    return new this.constructor(newVals);
+  }, 
 
   length: function () {
-    var x = this.x;
-    var y = this.y;
-    return Math.sqrt(x * x + y * y);
-  },
+    var squares = _.map(this.vals, function (val) { return val * val });
+
+    var sum = _.reduce(squares, function (accum, val) { return accum + val }, 0);
+
+    return Math.sqrt(sum);
+  }, 
 
   unit: function () {
-    return new Vector(this.x / this.length(), this.y / this.length());
+    var len = this.length();
+    var newVals = _.map(this.vals, function (val) { return val / len });
+
+    return new this.constructor(newVals);
   },
 
   setLength: function (length) {
@@ -27,9 +34,49 @@ var Vector = Ember.Object.extend({
 });
 
 Vector.add = function (vec1, vec2) {
-  return new Vector(vec1.x + vec2.x, vec1.y + vec2.y);
+  var newVals = _.map(vec1.vals, function (val, index) {
+    return val + vec2.vals[index];
+  });
+
+  return new vec1.constructor(newVals);
 }
 
-Vector.origin = new Vector(0.0, 0.0);
+Vector.subtract = function (vec1, vec2) {
+  var negVec2 = vec2.scale(-1);
+  return Vector.add(vec1, negVec2);
+}
 
-export default Vector;
+Vector.origin = function (dimensions) {
+  var vals = []
+  _.times(dimensions, function () {vals.push(0)});
+  return new Vector(vals);
+}
+
+// interpolates between vec1 and vec2 by epsilon
+// Vector.interpolate(vec1, vec2, 0) -> vec1
+// Vector.interpolate(vec1, vec2, 1) -> vec2
+Vector.interpolate = function (vec1, vec2, epsilon) {
+  var diff = Vector.subtract(vec2, vec1);
+  var scaledDiff = diff.scale(epsilon);
+  return Vector.add(vec1, scaledDiff);
+}
+
+var Vector2D = Vector.extend({
+  init: function (x, y) {
+    if (y == 0 || y) {
+      this.vals = [x, y];
+      this.x = x;
+      this.y = y;
+    } else {
+      this.vals = x;
+      this.x = x[0];
+      this.y = x[1];
+    }
+
+    return this;
+  }
+});
+
+Vector2D.origin = new Vector2D(0.0, 0.0);
+
+export { Vector, Vector2D };

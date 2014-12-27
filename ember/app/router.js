@@ -8,7 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.resource('libraries');
   this.resource('library', { path: '/library/:library_id' });
-  this.route('editor');
+  this.resource('editor');
 });
 
 export default Router;
